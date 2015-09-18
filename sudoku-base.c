@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <pthread.h>
 
 /* grid size = 9x9 */
 #define SIZE 9
@@ -20,10 +21,12 @@ int load_grid(int grid[][SIZE], char *filename) {
 
 int main(int argc, char *argv[]) {
 
-	if(argc != 2) {
-		printf("Erro: informe o arquivo de entrada.\nUso: %s <arquivo de entrada>\n\n", argv[0]);
+	if(argc != 3) {
+		printf("Erro: informe o arquivo de entrada e o número de threads a serem usadas.\nUso: %s <arquivo_de_entrada> <numero_de_threads>\n\n", argv[0]);
 		return 1;
 	}
+
+	int max_threads = argv[2];
 
 	/* Le o grid do arquivo, armazena na matriz grid e imprime */
 	int grid[9][9];
@@ -41,3 +44,4 @@ int main(int argc, char *argv[]) {
 
 	return 0;
 }
+
