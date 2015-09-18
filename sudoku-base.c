@@ -21,14 +21,14 @@ int load_grid(int grid[][SIZE], char *filename) {
 int main(int argc, char *argv[]) {
 
 	if(argc != 2) {
-		printf("Erro: informe o arquivo de entrada!\nUso: %s <arquivo de entrada>\n\n", argv[0]);
+		printf("Erro: informe o arquivo de entrada.\nUso: %s <arquivo de entrada>\n\n", argv[0]);
 		return 1;
 	}
 
 	/* Le o grid do arquivo, armazena na matriz grid e imprime */
 	int grid[9][9];
 	if(load_grid(grid, argv[1])) {
-		printf("Quebra-cabecas fornecido:\n");
+		printf("Quebra-cabeças fornecido:\n");
 		for(int i = 0; i < 9; i++) {
 			for(int j = 0; j < 9; j++)
 				printf("%d ", grid[i][j]);
@@ -36,6 +36,8 @@ int main(int argc, char *argv[]) {
 		}
 		printf("\n");
 	}
+
+
 
 	return 0;
 }
