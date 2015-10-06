@@ -27,19 +27,22 @@ int load_grid(int grid[][SIZE], char *filename) {
 	return 0;
 }
 
-
 int verifica(int x, int max_x, int y, int max_y) {
 	// Array de números verificados
 	// Ao encontrar um número marca 1 no índice dele
 	int verificados[SIZE] = { 0 };
+	// printf("X %d, Y %d\n", max_x, max_y);
+
+	int i = x;
+	int j = y;
 
 	// Percorre da linha X até a linha MAX_X
-	for(int i = x; i < max_x; ++i) {
-		// Percorre da linha Y até a coluna MAX_Y	
-		for(int j = y; j < max_y; ++j) {
+	for(int i = x; i <= max_x; ++i) {
+		// Percorre da linha Y até a coluna MAX_Y
+		for(int j = y; j <= max_y; ++j) {
 			// Pega o número atual na posição X, Y
-			int numero = grid[i][j];
-			if(verificados[numero-1]) {
+			int numero = grid[j][i];
+			if(verificados[numero-1] == 1) {
 				// Se o índice igual a esse número já estiver marcado incrementa erros e retorna
 				pthread_mutex_lock(&mutex_erro);
 				++erro;
@@ -50,7 +53,6 @@ int verifica(int x, int max_x, int y, int max_y) {
 				verificados[numero-1] = 1;
 			}
 		}
-
 	}
 
 	// Observação: fazemos numero-1 na posição porque os números vão de 1 a 9 e nosso array vai de 0 a 8
@@ -75,25 +77,25 @@ void * main_loop(void * param) {
 		
 		switch(tarefa) {
 			case 0:
-				if(!verifica(0, SIZE, numero, numero)) {
-					printf("Thread: %d - Erro na linha: %d\n", (int) param, numero);
+				if(!verifica(0, SIZE - 1, numero, numero)) {
+					printf("Thread: %d - Erro na linha: %d\n", (int) param, numero+1);
 				}
 
 				break;
 
 			case 1:
-				if(!verifica(numero, numero, 0, SIZE)) {
-					printf("Thread: %d - Erro na coluna: %d\n", (int) param, numero);
+				if(!verifica(numero, numero, 1, SIZE - 1)) {
+					printf("Thread: %d - Erro na coluna: %d\n", (int) param, numero+1);
 				}
 
 				break;
 
-			default:
+			case 2:
 				linha_inicial = numero % 3;
 				coluna_inicial = numero / 3;
 
-				if(!verifica(3 * linha_inicial, (3 * linha_inicial) + 3, 3 * coluna_inicial, (3 * coluna_inicial) + 3)) {
-					printf("Thread: %d - Erro na região: %d\n", (int) param, numero);
+				if(!verifica(3 * linha_inicial, (3 * linha_inicial) + 2, 3 * coluna_inicial, (3 * coluna_inicial) + 2)) {
+					printf("Thread: %d - Erro na região: %d\n", (int) param, numero+1);
 				}
 
 				break;
